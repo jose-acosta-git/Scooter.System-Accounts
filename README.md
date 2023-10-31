@@ -52,3 +52,8 @@
 ### Funcionalidades
 
 - Establecer tarifa normal y extra (post pausa extendida)
+
+
+# Diagrama de entidad y relaciones
+
+![dere](dere.png)
