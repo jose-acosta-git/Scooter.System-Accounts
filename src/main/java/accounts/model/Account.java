@@ -40,4 +40,8 @@ public class Account {
 	public double getBalance() {return balance;}
 	public String getMercadoPagoId() {return mercadoPagoId;}
 	public boolean isActive() {return isActive;}
+	
+	public void addMoney(double money) {
+		this.balance += money;
+	}
 }
