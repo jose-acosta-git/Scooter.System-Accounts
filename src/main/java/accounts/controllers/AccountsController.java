@@ -45,6 +45,11 @@ public class AccountsController {
 		return accountsRepository.findAll();
 	}
 	
+	@GetMapping("/{accountId}")
+	public ResponseEntity<Account> getById(@PathVariable int accountId) {
+		return accountsService.getById(accountId);
+	}
+	
 	@PatchMapping("/{accountId}/linkUser/{userId}")
 	public ResponseEntity<Account> linkUser(@PathVariable int accountId, @PathVariable int userId) {
 		Account linkedAccount = accountsService.linkUser(accountId, userId);

@@ -78,5 +78,13 @@ public class AccountsService {
 		}
 		return ResponseEntity.notFound().build();
 	}
+
+	public ResponseEntity<Account> getById(int accountId) {
+		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
+		if (optionalAccount.isPresent()) {
+			return ResponseEntity.ok(optionalAccount.get());
+		}
+		return ResponseEntity.notFound().build();
+	}
 	
 }
