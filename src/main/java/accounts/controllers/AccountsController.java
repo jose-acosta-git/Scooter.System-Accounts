@@ -54,4 +54,14 @@ public class AccountsController {
 		return ResponseEntity.ok(linkedAccount);
 	}
 	
+	@PatchMapping("/{accountId}/deactivate")
+	public ResponseEntity<Account> deactiveAccount(@PathVariable int accountId) {
+		return accountsService.deactivate(accountId);
+	}
+	
+	@PatchMapping("/{accountId}/activate")
+	public ResponseEntity<Account> activate(@PathVariable int accountId) {
+		return accountsService.activate(accountId);
+	}
+	
 }

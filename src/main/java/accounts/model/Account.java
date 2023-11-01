@@ -60,4 +60,12 @@ public class Account {
     public void removeUser(User user) {
         users.remove(user);
     }
+
+	public void deactivate() {
+		isActive = false;
+	}
+	
+	public void activate() {
+		isActive = true;
+	}
 }

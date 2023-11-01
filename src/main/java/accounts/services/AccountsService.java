@@ -3,6 +3,7 @@ package accounts.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import accounts.dtos.AccountDto;
@@ -56,6 +57,26 @@ public class AccountsService {
 			return null;
 		}
 		return null;
+	}
+
+	public ResponseEntity<Account> deactivate(int id) {
+		Optional<Account> optionalAccount = accountsRepository.findById(id);
+		if (optionalAccount.isPresent()) {
+			Account account = optionalAccount.get();
+			account.deactivate();
+			return ResponseEntity.ok(accountsRepository.save(account));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	public ResponseEntity<Account> activate(int id) {
+		Optional<Account> optionalAccount = accountsRepository.findById(id);
+		if (optionalAccount.isPresent()) {
+			Account account = optionalAccount.get();
+			account.activate();
+			return ResponseEntity.ok(accountsRepository.save(account));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 }
