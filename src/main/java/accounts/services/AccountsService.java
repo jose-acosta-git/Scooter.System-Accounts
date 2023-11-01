@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import accounts.dtos.AccountDto;
 import accounts.model.Account;
+import accounts.model.User;
 import accounts.repositories.AccountsRepository;
+import accounts.repositories.UsersRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -15,6 +17,8 @@ public class AccountsService {
 
 	@Autowired
 	private AccountsRepository accountsRepository;
+	@Autowired
+	private UsersRepository usersRepository;
 	
 	public Account save(AccountDto dto) {
 		return accountsRepository.save(convertToEntity(dto));
@@ -35,6 +39,21 @@ public class AccountsService {
 			 * */
 			account.addMoney(moneyCount);
 			return accountsRepository.save(account);
+		}
+		return null;
+	}
+
+	public Account linkUser(int accountId, int userId) {
+		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
+		if (optionalAccount.isPresent()) {
+			Account account = optionalAccount.get();
+			Optional<User> optionalUser = usersRepository.findById(userId);
+			if (optionalUser.isPresent()) {
+				User user = optionalUser.get();
+				account.addUser(user);
+				return accountsRepository.save(account);
+			}
+			return null;
 		}
 		return null;
 	}

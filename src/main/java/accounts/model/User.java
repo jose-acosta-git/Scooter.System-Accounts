@@ -3,6 +3,8 @@ package accounts.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +32,7 @@ public class User {
 	@Column
 	private String role;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "users")
 	private Set<Account> accounts;
 
