@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import accounts.dtos.AccountDto;
+import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.repositories.AccountsRepository;
 import accounts.services.AccountsService;
@@ -67,6 +68,11 @@ public class AccountsController {
 	@PatchMapping("/{accountId}/activate")
 	public ResponseEntity<Account> activate(@PathVariable int accountId) {
 		return accountsService.activate(accountId);
+	}
+	
+	@PatchMapping("/{accountId}/payService")
+	public ResponseEntity<Account> payService(@PathVariable int accountId, @RequestBody PaymentDto dto) {
+		return accountsService.payService(accountId, dto);
 	}
 	
 }

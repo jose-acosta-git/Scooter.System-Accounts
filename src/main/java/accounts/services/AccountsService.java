@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import accounts.dtos.AccountDto;
+import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.AccountsRepository;
@@ -83,6 +84,16 @@ public class AccountsService {
 		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
 		if (optionalAccount.isPresent()) {
 			return ResponseEntity.ok(optionalAccount.get());
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	public ResponseEntity<Account> payService(int accountId, PaymentDto dto) {
+		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
+		if (optionalAccount.isPresent()) {
+			Account account = optionalAccount.get();
+			account.payService(dto.getPrice());
+			return ResponseEntity.ok(accountsRepository.save(account));
 		}
 		return ResponseEntity.notFound().build();
 	}

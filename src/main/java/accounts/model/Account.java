@@ -68,4 +68,8 @@ public class Account {
 	public void activate() {
 		isActive = true;
 	}
+
+	public void payService(double price) {
+		this.balance -= price;
+	}
 }
