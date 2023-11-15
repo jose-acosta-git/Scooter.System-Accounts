@@ -41,8 +41,7 @@ public class User implements UserDetails{
 	@Column
 	Role role;
 	
-	@JsonIgnore
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany
 	private Set<Account> accounts;
 
 	public User(String name, String email, String password, String phone, Role role) {
@@ -96,5 +95,9 @@ public class User implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void addAccount(Account account) {
+		this.accounts.add(account);
 	}
 }

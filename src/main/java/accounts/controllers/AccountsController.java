@@ -17,6 +17,7 @@ import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.repositories.AccountsRepository;
 import accounts.services.AccountsService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/accounts")
@@ -27,13 +28,9 @@ public class AccountsController {
 	@Autowired
 	AccountsService accountsService;
 	
-	@PatchMapping("/{accountId}/addMoney/{moneyCount}")
-	public ResponseEntity<Account> addMoney(@PathVariable int accountId, @PathVariable double moneyCount) {
-		Account updatedAccount = accountsService.addMoney(accountId, moneyCount);
-        if (updatedAccount == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedAccount);
+	@PostMapping("/{accountId}/addMoney/{moneyCount}")
+	public ResponseEntity<Account> addMoney(HttpServletRequest request, @PathVariable int accountId, @PathVariable double moneyCount) {
+		return accountsService.addMoney(request, accountId, moneyCount);
 	}
 	
 	@PostMapping

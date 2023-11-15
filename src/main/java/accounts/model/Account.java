@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +31,8 @@ public class Account {
 	@Column
 	private boolean isActive;
 	
-	@ManyToMany
+	@JsonIgnore
+	@ManyToMany(mappedBy = "accounts")
 	private Set<User> users;
 	
 	public Account(LocalDate registrationDate, double balance, String mercadoPagoId) {
