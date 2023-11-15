@@ -1,8 +1,10 @@
 package accounts.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -114,5 +116,16 @@ public class AccountsService {
 		}
 		return ResponseEntity.notFound().build();
 	}
+
+    public ResponseEntity<List<Account>> findAll(HttpServletRequest request) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		var role = userDetails.getAuthorities().iterator().next().getAuthority();
+		if (role.equals("ADMIN")) {
+			return ResponseEntity.ok(accountsRepository.findAll());
+		}
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
 	
 }
