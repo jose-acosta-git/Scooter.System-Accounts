@@ -23,11 +23,6 @@ public class UsersController {
 	@Autowired
 	UsersService usersService;
 	
-	@PostMapping
-	public User create(@RequestBody UserDto dto) {
-		return usersService.save(dto);
-	}
-	
 	@GetMapping
 	public List<User> findAll() {
 		return usersRepository.findAll();
