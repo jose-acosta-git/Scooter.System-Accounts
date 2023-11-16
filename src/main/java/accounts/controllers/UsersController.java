@@ -17,6 +17,7 @@ import accounts.dtos.UserDto;
 import accounts.model.User;
 import accounts.repositories.UsersRepository;
 import accounts.services.UsersService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/users")
@@ -28,8 +29,8 @@ public class UsersController {
 	UsersService usersService;
 	
 	@GetMapping
-	public List<User> findAll() {
-		return usersRepository.findAll();
+	public ResponseEntity<List<User>> findAll(HttpServletRequest request) {
+		return usersService.findAll(request);
 	}
 
 	@PostMapping("/{userId}/linkNewAccount")
