@@ -64,8 +64,8 @@ public class AccountsController {
 	}
 	
 	@PatchMapping("/{accountId}/activate")
-	public ResponseEntity<Account> activate(@PathVariable int accountId) {
-		return accountsService.activate(accountId);
+	public ResponseEntity<Account> activate(HttpServletRequest request, @PathVariable int accountId) {
+		return accountsService.activate(request, accountId);
 	}
 	
 	@PatchMapping("/{accountId}/payService")

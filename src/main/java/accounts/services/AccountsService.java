@@ -86,7 +86,7 @@ public class AccountsService {
 		var role = userDetails.getAuthorities().iterator().next().getAuthority();
 		if (!role.equals("ADMIN"))
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-			
+
 		Optional<Account> optionalAccount = accountsRepository.findById(id);
 		if (optionalAccount.isPresent()) {
 			Account account = optionalAccount.get();
@@ -96,7 +96,14 @@ public class AccountsService {
 		return ResponseEntity.notFound().build();
 	}
 	
-	public ResponseEntity<Account> activate(int id) {
+	public ResponseEntity<Account> activate(HttpServletRequest request, int id) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		var role = userDetails.getAuthorities().iterator().next().getAuthority();
+		if (!role.equals("ADMIN"))
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
 		Optional<Account> optionalAccount = accountsRepository.findById(id);
 		if (optionalAccount.isPresent()) {
 			Account account = optionalAccount.get();
