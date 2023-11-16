@@ -59,8 +59,8 @@ public class AccountsController {
 	}
 	
 	@PatchMapping("/{accountId}/deactivate")
-	public ResponseEntity<Account> deactiveAccount(@PathVariable int accountId) {
-		return accountsService.deactivate(accountId);
+	public ResponseEntity<Account> deactiveAccount(HttpServletRequest request, @PathVariable int accountId) {
+		return accountsService.deactivate(request, accountId);
 	}
 	
 	@PatchMapping("/{accountId}/activate")
