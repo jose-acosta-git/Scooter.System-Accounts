@@ -9,8 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,12 +37,12 @@ public class User implements UserDetails{
 	private String password;
 
 	@Column
-	Role role;
+	String role;
 	
 	@ManyToMany
 	private Set<Account> accounts;
 
-	public User(String name, String email, String password, String phone, Role role) {
+	public User(String name, String email, String password, String phone, String role) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -59,12 +57,12 @@ public class User implements UserDetails{
 	public String getName() {return name;}
 	public String getEmail() {return email;}
 	public String getPhone() {return phone;}
-	public Role getRole() {return role;}
+	public String getRole() {return role;}
 	public Set<Account> getAccounts () {return accounts;}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return List.of(new SimpleGrantedAuthority(role));
 	}
 
 	@Override

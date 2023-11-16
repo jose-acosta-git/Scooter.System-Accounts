@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import accounts.dtos.AuthResponseDto;
 import accounts.dtos.LoginDto;
 import accounts.dtos.RegisterDto;
-import accounts.model.Role;
 import accounts.model.User;
 import accounts.repositories.UsersRepository;
 
@@ -36,23 +36,15 @@ public class AuthService {
 
     public ResponseEntity<AuthResponseDto> register(RegisterDto request) {
     String requestRole = request.getRole();
-    Role role;
-    if (requestRole.equals("admin")) {
-        role = Role.ADMIN;
-    } else if (requestRole.equals("user")) {
-        role = Role.USER;
-    } else if (requestRole.equals("maintenance")) {
-        role = Role.MAINTENANCE;
-    } else {
+    if (!requestRole.equals("ADMIN") && !requestRole.equals("USER") && !requestRole.equals("MAINTENANCE"))
         return ResponseEntity.badRequest().build();
-    }
 
     User user = new User(
         request.getName(),
         request.getEmail(),
         passwordEncoder.encode(request.getPassword()),
         request.getPhone(),
-        role
+        requestRole
     );
     usersRepository.save(user);
     return ResponseEntity.ok(new AuthResponseDto(jwtService.getToken(user)));
