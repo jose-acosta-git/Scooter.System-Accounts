@@ -99,10 +99,20 @@ public class AccountsService {
 		return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity<Account> getById(int accountId) {
+	public ResponseEntity<Account> getById(HttpServletRequest request, int accountId) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		var role = userDetails.getAuthorities().iterator().next().getAuthority();
+		User user = usersRepository.findByEmail(email).get();
+
 		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
 		if (optionalAccount.isPresent()) {
-			return ResponseEntity.ok(optionalAccount.get());
+			Account account = optionalAccount.get();
+			if (!role.equals("ADMIN") && !user.getAccounts().contains(account)) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+			}
+			return ResponseEntity.ok(account);
 		}
 		return ResponseEntity.notFound().build();
 	}

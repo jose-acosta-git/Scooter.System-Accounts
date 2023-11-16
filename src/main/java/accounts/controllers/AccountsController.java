@@ -45,8 +45,8 @@ public class AccountsController {
 	}
 	
 	@GetMapping("/{accountId}")
-	public ResponseEntity<Account> getById(@PathVariable int accountId) {
-		return accountsService.getById(accountId);
+	public ResponseEntity<Account> getById(HttpServletRequest request, @PathVariable int accountId) {
+		return accountsService.getById(request, accountId);
 	}
 	
 	@PatchMapping("/{accountId}/linkUser/{userId}")
