@@ -131,14 +131,23 @@ public class AccountsService {
 		return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity<Account> payService(int accountId, PaymentDto dto) {
+	public ResponseEntity<Account> payService(HttpServletRequest request, int accountId, PaymentDto dto) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+		var role = userDetails.getAuthorities().iterator().next().getAuthority();
+		User user = usersRepository.findByEmail(email).get();
+
 		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
-		if (optionalAccount.isPresent()) {
-			Account account = optionalAccount.get();
+		if (!optionalAccount.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		Account account = optionalAccount.get();
+		if (user.getAccounts().contains(account)) {
 			account.payService(dto.getPrice());
 			return ResponseEntity.ok(accountsRepository.save(account));
 		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 	}
 
     public ResponseEntity<List<Account>> findAll(HttpServletRequest request) {

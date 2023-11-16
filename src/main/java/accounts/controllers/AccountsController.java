@@ -69,8 +69,8 @@ public class AccountsController {
 	}
 	
 	@PatchMapping("/{accountId}/payService")
-	public ResponseEntity<Account> payService(@PathVariable int accountId, @RequestBody PaymentDto dto) {
-		return accountsService.payService(accountId, dto);
+	public ResponseEntity<Account> payService(HttpServletRequest request, @PathVariable int accountId, @RequestBody PaymentDto dto) {
+		return accountsService.payService(request, accountId, dto);
 	}
 	
 }
