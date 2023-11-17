@@ -11,11 +11,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import accounts.config.JwtAuthenticationFilter;
 import accounts.dtos.AuthResponseDto;
 import accounts.dtos.LoginDto;
 import accounts.dtos.RegisterDto;
 import accounts.model.User;
 import accounts.repositories.UsersRepository;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class AuthService {
@@ -28,6 +30,8 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtAuthenticationFilter authenticationFilter;
 
     public ResponseEntity<AuthResponseDto> login(LoginDto request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -52,7 +56,10 @@ public class AuthService {
     return ResponseEntity.ok(new AuthResponseDto(jwtService.getToken(user)));   
 }
 
-    public Boolean isTokenValid(String token) {
+    public Boolean isTokenValid(HttpServletRequest request) {
+        String token = authenticationFilter.getTokenFromRequest(request);
+        if (token == null)
+            return false;
         try {
             String email = jwtService.getUsernameFromToken(token);
             Optional<User> optionalUser = usersRepository.findByEmail(email);

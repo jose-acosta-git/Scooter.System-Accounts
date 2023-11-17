@@ -13,6 +13,7 @@ import accounts.dtos.AuthResponseDto;
 import accounts.dtos.LoginDto;
 import accounts.dtos.RegisterDto;
 import accounts.services.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,8 +33,8 @@ public class AuthController {
     }
 
     @GetMapping("/isTokenValid")
-    public Boolean isTokenValid(@RequestBody String token) {
-        return authService.isTokenValid(token);
+    public Boolean isTokenValid(HttpServletRequest request) {
+        return authService.isTokenValid(request);
     }
 
     

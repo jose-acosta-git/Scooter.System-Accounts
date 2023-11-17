@@ -21,7 +21,7 @@ public class JwtService {
     private static final String SECRET_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm1234567890";
 
         public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+            return getToken(new HashMap<>(), user);
     }
 
     private String getToken(Map<String,Object> extraClaims, UserDetails user) {
