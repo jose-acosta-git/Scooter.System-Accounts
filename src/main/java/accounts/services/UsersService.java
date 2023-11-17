@@ -71,11 +71,33 @@ public class UsersService {
 
     public ResponseEntity<User> getUserByToken(HttpServletRequest request) {
 		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+		if (token == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
         String email = jwtService.getUsernameFromToken(token);
 		Optional<User> optionalUser = usersRepository.findByEmail(email);
 		if (optionalUser.isPresent()) {
 			return ResponseEntity.ok(optionalUser.get());
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    public ResponseEntity<Boolean> hasMoney(HttpServletRequest request) {
+        String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+		if (token == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+        String email = jwtService.getUsernameFromToken(token);
+		Optional<User> optionalUser = usersRepository.findByEmail(email);
+		if (!optionalUser.isPresent()) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		User user = optionalUser.get();
+		for (Account account : user.getAccounts()) {
+			if (account.getBalance() > 0) {
+				return ResponseEntity.ok(true);
+			}
+		}
+		return ResponseEntity.ok(false);
     }
 }

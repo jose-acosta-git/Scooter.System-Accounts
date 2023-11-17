@@ -48,4 +48,9 @@ public class UsersController {
 		return usersService.getUserByToken(request);
 	}
 
+	@GetMapping("/hasMoney")
+	public ResponseEntity<Boolean> hasMoney(HttpServletRequest request) {
+		return usersService.hasMoney(request);
+	}
+
 }
