@@ -1,5 +1,7 @@
 package accounts.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +49,19 @@ public class AuthService {
         requestRole
     );
     usersRepository.save(user);
-    return ResponseEntity.ok(new AuthResponseDto(jwtService.getToken(user)));
+    return ResponseEntity.ok(new AuthResponseDto(jwtService.getToken(user)));   
 }
-    
+
+    public Boolean isTokenValid(String token) {
+        try {
+            String email = jwtService.getUsernameFromToken(token);
+            Optional<User> optionalUser = usersRepository.findByEmail(email);
+            if (optionalUser.isPresent()) {
+                return true;
+            }
+            return false;
+        } catch(Exception e) {
+            return false;
+        }
+    }
 }
