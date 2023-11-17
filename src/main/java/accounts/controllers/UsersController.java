@@ -43,4 +43,9 @@ public class UsersController {
 		return usersService.linkAccount(userId, accountId);
 	}
 
+	@GetMapping("/byToken")
+	public ResponseEntity<User> getUserByToken(HttpServletRequest request) {
+		return usersService.getUserByToken(request);
+	}
+
 }

@@ -68,4 +68,14 @@ public class UsersService {
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+
+    public ResponseEntity<User> getUserByToken(HttpServletRequest request) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+		Optional<User> optionalUser = usersRepository.findByEmail(email);
+		if (optionalUser.isPresent()) {
+			return ResponseEntity.ok(optionalUser.get());
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 }
