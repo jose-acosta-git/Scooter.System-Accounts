@@ -48,9 +48,9 @@ public class UsersController {
 		return usersService.getUserByToken(request);
 	}
 
-	@GetMapping("/hasMoney")
-	public ResponseEntity<Boolean> hasMoney(HttpServletRequest request) {
-		return usersService.hasMoney(request);
+	@GetMapping("/canStartRide")
+	public ResponseEntity<Boolean> canStartRide(HttpServletRequest request) {
+		return usersService.canStartRide(request);
 	}
 
 }

@@ -82,7 +82,7 @@ public class UsersService {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    public ResponseEntity<Boolean> hasMoney(HttpServletRequest request) {
+    public ResponseEntity<Boolean> canStartRide(HttpServletRequest request) {
         String token = jwtAuthenticationFilter.getTokenFromRequest(request);
 		if (token == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -94,7 +94,7 @@ public class UsersService {
 		}
 		User user = optionalUser.get();
 		for (Account account : user.getAccounts()) {
-			if (account.getBalance() > 0) {
+			if (account.getBalance() > 0 && account.isActive()) {
 				return ResponseEntity.ok(true);
 			}
 		}
