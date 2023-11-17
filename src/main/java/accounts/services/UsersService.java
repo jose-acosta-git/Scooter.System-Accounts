@@ -114,4 +114,14 @@ public class UsersService {
 		}
 		return ResponseEntity.badRequest().build();
     }
+
+    public ResponseEntity<String> getRole(HttpServletRequest request) {
+        String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+		if (token == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+		String email = jwtService.getUsernameFromToken(token);
+		User user = usersRepository.findByEmail(email).get();
+		return ResponseEntity.ok(user.getRole());
+    }
 }

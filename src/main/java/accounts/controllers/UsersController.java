@@ -61,4 +61,9 @@ public class UsersController {
 		return usersService.payService(request, dto);
 	}
 
+	@GetMapping("/getRole")
+	public ResponseEntity<String> getRole(HttpServletRequest request) {
+		return usersService.getRole(request);
+	}
+
 }
