@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import accounts.config.JwtAuthenticationFilter;
 import accounts.dtos.AccountDto;
+import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.AccountsRepository;
@@ -99,5 +100,18 @@ public class UsersService {
 			}
 		}
 		return ResponseEntity.ok(false);
+    }
+
+    public ResponseEntity<Account> payService(HttpServletRequest request, PaymentDto dto) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+		User user = usersRepository.findByEmail(email).get();
+		for (Account account : user.getAccounts()) {
+			if (account.isActive() && account.getBalance() > 0) {
+				account.payService(dto.getPrice());
+				return ResponseEntity.ok(accountsRepository.save(account));
+			}
+		}
+		return ResponseEntity.badRequest().build();
     }
 }

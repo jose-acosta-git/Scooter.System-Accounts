@@ -2,6 +2,7 @@ package accounts.controllers;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import accounts.dtos.AccountDto;
+import accounts.dtos.PaymentDto;
 import accounts.dtos.UserDto;
+import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.UsersRepository;
 import accounts.services.UsersService;
@@ -51,6 +54,11 @@ public class UsersController {
 	@GetMapping("/canStartRide")
 	public ResponseEntity<Boolean> canStartRide(HttpServletRequest request) {
 		return usersService.canStartRide(request);
+	}
+
+	@PostMapping("/payService")
+	public ResponseEntity<Account> payService(HttpServletRequest request, @RequestBody PaymentDto dto) {
+		return usersService.payService(request, dto);
 	}
 
 }

@@ -68,9 +68,4 @@ public class AccountsController {
 		return accountsService.activate(request, accountId);
 	}
 	
-	@PatchMapping("/{accountId}/payService")
-	public ResponseEntity<Account> payService(HttpServletRequest request, @PathVariable int accountId, @RequestBody PaymentDto dto) {
-		return accountsService.payService(request, accountId, dto);
-	}
-	
 }
