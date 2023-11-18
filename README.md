@@ -2,7 +2,7 @@
 
 ### Modelado de micro-servicios (domain-driven desing)
 
-![domain-driven-design](domain-driven design.png)
+![domain-driven-design](domain-driven.design.png)
 
 
 ### Diagrama de entidad y relaciones
