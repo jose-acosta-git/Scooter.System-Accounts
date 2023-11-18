@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -33,26 +35,29 @@ public class UsersService {
 	private JwtService jwtService;
 	@Autowired
 	private UserDetailsService userDetailsService;
+	@Autowired
+	AuthenticationManager authManager;
 
-    public ResponseEntity<User> linkNewAccount(Integer userId, AccountDto dto) {
-        Optional<User> optionalUser = usersRepository.findById(userId);
-		if (!optionalUser.isPresent())
-			return ResponseEntity.notFound().build();
+    public ResponseEntity<User> linkNewAccount(HttpServletRequest request, AccountDto dto) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        User user = usersRepository.findByEmail(email).get();
 
-		User user = optionalUser.get();
 		Account account = new Account(dto.getRegistrationDate(), dto.getBalance(), dto.getMercadoPagoId());
 		accountsRepository.save(account);
 		user.addAccount(account);
 		return ResponseEntity.ok(usersRepository.save(user));
     }
 
-	public ResponseEntity<User> linkAccount(Integer userId, Integer accountId) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
+	public ResponseEntity<User> linkAccount(HttpServletRequest request, Integer accountId) {
+		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
+        String email = jwtService.getUsernameFromToken(token);
+        User user = usersRepository.findByEmail(email).get();
+
 		Optional<Account> optionalAccount = accountsRepository.findById(accountId);
-		if (!optionalUser.isPresent() || !optionalAccount.isPresent())
+		if (!optionalAccount.isPresent())
 			return ResponseEntity.notFound().build();
 		
-		User user = optionalUser.get();
 		Account account = optionalAccount.get();
 		if (user.getAccounts().contains(account))
 			return ResponseEntity.badRequest().build();

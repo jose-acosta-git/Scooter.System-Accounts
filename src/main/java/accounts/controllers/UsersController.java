@@ -37,14 +37,14 @@ public class UsersController {
 		return usersService.findAll(request);
 	}
 
-	@PostMapping("/{userId}/linkNewAccount")
-	public ResponseEntity<User> linkNewAccount(@PathVariable Integer userId, @RequestBody AccountDto dto) {
-		return usersService.linkNewAccount(userId, dto);
+	@PostMapping("/linkNewAccount")
+	public ResponseEntity<User> linkNewAccount(HttpServletRequest request, @RequestBody AccountDto dto) {
+		return usersService.linkNewAccount(request, dto);
 	}
 
-	@PostMapping("/{userId}/linkAccount/{accountId}")
-	public ResponseEntity<User> linkAccount(@PathVariable Integer userId, @PathVariable Integer accountId) {
-		return usersService.linkAccount(userId, accountId);
+	@PostMapping("/linkAccount/{accountId}")
+	public ResponseEntity<User> linkAccount(HttpServletRequest request, @PathVariable Integer accountId) {
+		return usersService.linkAccount(request, accountId);
 	}
 
 	@GetMapping("/byToken")
