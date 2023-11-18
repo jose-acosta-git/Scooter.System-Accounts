@@ -49,15 +49,6 @@ public class AccountsController {
 		return accountsService.getById(request, accountId);
 	}
 	
-	@PatchMapping("/{accountId}/linkUser/{userId}")
-	public ResponseEntity<Account> linkUser(@PathVariable int accountId, @PathVariable int userId) {
-		Account linkedAccount = accountsService.linkUser(accountId, userId);
-		if (linkedAccount == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(linkedAccount);
-	}
-	
 	@PatchMapping("/{accountId}/deactivate")
 	public ResponseEntity<Account> deactiveAccount(HttpServletRequest request, @PathVariable int accountId) {
 		return accountsService.deactivate(request, accountId);
