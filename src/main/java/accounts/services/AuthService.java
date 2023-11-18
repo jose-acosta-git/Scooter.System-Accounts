@@ -43,6 +43,11 @@ public class AuthService {
         String requestRole = request.getRole();
         if (!requestRole.equals("ADMIN") && !requestRole.equals("USER") && !requestRole.equals("MAINTENANCE"))
             return ResponseEntity.badRequest().build();
+        Optional<User> optionalUser = usersRepository.findByEmail(request.getEmail());
+        if (optionalUser.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+
 
         User user = new User(
             request.getName(),
