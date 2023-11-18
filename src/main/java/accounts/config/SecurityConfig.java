@@ -27,6 +27,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authRequest ->
                 authRequest
                     .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("/swagger-ui.html")).permitAll()
                     .anyRequest().authenticated()
                 )
             .sessionManagement(sessionManager -> 
