@@ -52,7 +52,5 @@ public class UserResponseDto {
 
     public Set<Account> getAccounts() {
         return accounts;
-    }
-    
-    
+    }   
 }

@@ -2,7 +2,6 @@ package accounts.controllers;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import accounts.dtos.AccountDto;
-import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.repositories.AccountsRepository;
 import accounts.services.AccountsService;
@@ -58,5 +56,4 @@ public class AccountsController {
 	public ResponseEntity<Account> activate(HttpServletRequest request, @PathVariable int accountId) {
 		return accountsService.activate(request, accountId);
 	}
-	
 }

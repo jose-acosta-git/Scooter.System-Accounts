@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 
 import accounts.config.JwtAuthenticationFilter;
 import accounts.dtos.AccountDto;
-import accounts.dtos.PaymentDto;
 import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.AccountsRepository;
 import accounts.repositories.UsersRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -140,6 +138,5 @@ public class AccountsService {
 			return ResponseEntity.ok(accountsRepository.findAll());
 		}
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-	
+    }	
 }

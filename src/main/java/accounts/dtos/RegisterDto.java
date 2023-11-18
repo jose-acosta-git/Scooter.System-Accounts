@@ -1,6 +1,5 @@
 package accounts.dtos;
 
-
 public class RegisterDto {
 	private String name;
 	private String email;
@@ -37,5 +36,4 @@ public class RegisterDto {
     public String getRole() {
         return role;
     }
-    
 }
