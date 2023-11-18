@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import accounts.dtos.AccountDto;
 import accounts.dtos.PaymentDto;
 import accounts.dtos.UserDto;
+import accounts.dtos.UserResponseDto;
 import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.UsersRepository;
@@ -47,7 +48,7 @@ public class UsersController {
 	}
 
 	@GetMapping("/byToken")
-	public ResponseEntity<User> getUserByToken(HttpServletRequest request) {
+	public ResponseEntity<UserResponseDto> getUserByToken(HttpServletRequest request) {
 		return usersService.getUserByToken(request);
 	}
 

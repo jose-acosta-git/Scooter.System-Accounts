@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import accounts.config.JwtAuthenticationFilter;
 import accounts.dtos.AccountDto;
 import accounts.dtos.PaymentDto;
+import accounts.dtos.UserResponseDto;
 import accounts.model.Account;
 import accounts.model.User;
 import accounts.repositories.AccountsRepository;
@@ -70,7 +71,7 @@ public class UsersService {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    public ResponseEntity<User> getUserByToken(HttpServletRequest request) {
+    public ResponseEntity<UserResponseDto> getUserByToken(HttpServletRequest request) {
 		String token = jwtAuthenticationFilter.getTokenFromRequest(request);
 		if (token == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -78,12 +79,17 @@ public class UsersService {
         String email = jwtService.getUsernameFromToken(token);
 		Optional<User> optionalUser = usersRepository.findByEmail(email);
 		if (optionalUser.isPresent()) {
-			return ResponseEntity.ok(optionalUser.get());
+			return ResponseEntity.ok(convertToDto(optionalUser.get()));
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    public ResponseEntity<Boolean> canStartRide(HttpServletRequest request) {
+    private UserResponseDto convertToDto(User user) {
+		return new UserResponseDto(user.getId(), user.getName(), user.getEmail(),
+		user.getPhone(), user.getPassword(), user.getRole(), user.getAccounts());
+	}
+
+	public ResponseEntity<Boolean> canStartRide(HttpServletRequest request) {
         String token = jwtAuthenticationFilter.getTokenFromRequest(request);
 		if (token == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
